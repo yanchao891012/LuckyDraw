@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LuckyDraw"
         mc:Ignorable="d"
-        Title="抽奖系统" Height="500" Width="800" Icon="Icon.ico" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
+        Title="抽奖系统" Height="500" Width="800" Icon="Icon.ico" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -41,8 +41,10 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel x:Name="sp_list1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <StackPanel x:Name="sp_list2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <!--<StackPanel x:Name="sp_list1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <StackPanel x:Name="sp_list2" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
+                            <TextBlock x:Name="tb1" Grid.Column="0" Style="{StaticResource TextBlockAwardStyle}"/>
+                            <TextBlock x:Name="tb2" Grid.Column="1" Style="{StaticResource TextBlockAwardStyle}"/>
                         </Grid>
                     </Grid>
                 </Viewbox>

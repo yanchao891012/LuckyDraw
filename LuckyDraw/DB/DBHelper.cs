@@ -139,8 +139,9 @@ namespace LuckyDraw.DB
                 while (reader.Read())
                 {
                     Award award = new Award();
-                    award.Name = reader["Name"].ToString();
+                    award.Name = reader["Name"].ToString();                    
                     award.Number = int.Parse(reader["Number"].ToString());
+                    award.ResNum = int.Parse(reader["Number"].ToString());
                     award.Content = reader["Content"].ToString();
                     list.Add(award);
                 }

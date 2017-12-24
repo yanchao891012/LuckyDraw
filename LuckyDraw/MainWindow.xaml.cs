@@ -31,32 +31,24 @@ namespace LuckyDraw
             Setting win = new Setting();
             win.ShowInTaskbar = false;
             win.Owner = this;
-            win.ShowDialog();            
+            win.ShowDialog();
         }
-
+        List<Award> awardList = new List<Award>();
         private void SelectInfo()
         {
             StaticEntity.AwardNameList.Clear();
-            ComDesc comDesc= DB.DBHelper.SelectComDesc();
+            ComDesc comDesc = DB.DBHelper.SelectComDesc();
             tb_Company.Text = comDesc.Company;
             tb_Desc.Text = comDesc.Desc;
+            awardList.Clear();
+            awardList = DB.DBHelper.SelectAward();
+            tb1.Text = string.Empty;
+            tb2.Text = string.Empty;
 
-            List<Award> awardList = DB.DBHelper.SelectAward();
-            sp_list1.Children.Clear();
-            sp_list2.Children.Clear();
             foreach (var item in awardList)
             {
-                TextBlock tb1 = new TextBlock();
-                tb1.Text = item.Name +"："+ item.Number + "名";
-                tb1.Style = Resources["TextBlockAwardStyle"] as Style;
-                tb1.Foreground = Brushes.Gold;
-                sp_list1.Children.Add(tb1);
-
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = "  奖品：" + item.Content;
-                tb2.Style = Resources["TextBlockAwardStyle"] as Style;
-                tb2.Foreground = Brushes.Gold;
-                sp_list2.Children.Add(tb2);
+                tb1.Text += item.Name + "：" + item.Number + "名   " + "剩余：" + item.ResNum+"名" + "\r\n";
+                tb2.Text += "  奖品：" + item.Content + "\r\n";
 
                 for (int i = 0; i < item.Number; i++)
                 {
@@ -75,7 +67,9 @@ namespace LuckyDraw
         {
             if (btn_start.Tag.ToString().Equals("start"))
             {
-                if (StaticEntity.AwardNameList.Count==0)
+                
+
+                if (StaticEntity.AwardNameList.Count == 0)
                 {
                     la_Award.Content = "开奖区";
                     MessageBox.Show("奖池中已无奖项，请添加!");
@@ -97,6 +91,15 @@ namespace LuckyDraw
                 timer_random.Stop();
                 RandomAward(StaticEntity.AwardNameList.Count, StaticEntity.AwardNameList);
                 StaticEntity.AwardNameList.Remove(StaticEntity.AwardNameList[StaticEntity.WinNum]);
+                tb1.Text = string.Empty;
+                foreach (var item in awardList)
+                {
+                    if (item.Name.Equals(la_Award.Content))
+                    {
+                        item.ResNum = item.ResNum - 1;
+                    }
+                    tb1.Text += item.Name + "：" + item.Number + "名   " + "剩余：" + item.ResNum + "名" + "\r\n";
+                }
                 return;
             }
         }
@@ -107,7 +110,7 @@ namespace LuckyDraw
         }
 
         Timer timer_random;
-        private void RandomAward(int count,List<string> list)
+        private void RandomAward(int count, List<string> list)
         {
             //int count = StaticEntity.AwardNameList.Count;
             Random random = new Random();
@@ -119,11 +122,9 @@ namespace LuckyDraw
             }));
         }
 
-
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key==Key.Space)
+            if (e.Key == Key.Space)
             {
                 btn_start_Click(sender, e);
             }
